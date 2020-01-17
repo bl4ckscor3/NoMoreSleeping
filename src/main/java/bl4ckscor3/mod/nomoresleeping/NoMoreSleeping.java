@@ -2,6 +2,7 @@ package bl4ckscor3.mod.nomoresleeping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.LivingEntity;
@@ -57,7 +58,10 @@ public class NoMoreSleeping
 			else if(!world.dimension.isSurfaceWorld())
 				event.setResult(SleepResult.NOT_POSSIBLE_HERE);
 			else if(!ForgeEventFactory.fireSleepingTimeCheck(player, optAt))
+			{
+				player.setSpawnPoint(at, false, true, player.dimension);
 				event.setResult(SleepResult.NOT_POSSIBLE_NOW);
+			}
 			else if(!bedInRange(player, at, direction))
 				event.setResult(SleepResult.TOO_FAR_AWAY);
 			else if(isBedObstructed(player, at, direction))
@@ -81,7 +85,7 @@ public class NoMoreSleeping
 					world.setDayTime(ForgeEventFactory.onSleepFinished(world, l - l % 24000L, world.getDayTime()));
 				}
 
-				world.getPlayers().stream().filter(LivingEntity::isSleeping).forEach(p -> p.wakeUpPlayer(false, false, true));
+				world.getPlayers().stream().filter(LivingEntity::isSleeping).collect(Collectors.toList()).forEach(p -> p.func_225652_a_(false, false)); //wakeUpPlayer
 
 				if(world.getGameRules().getBoolean(GameRules.DO_WEATHER_CYCLE))
 					world.dimension.resetRainAndThunder();
@@ -93,14 +97,14 @@ public class NoMoreSleeping
 
 	private static boolean bedInRange(PlayerEntity player, BlockPos pos, Direction dir)
 	{
-		if(Math.abs(player.posX - pos.getX()) <= 3.0D && Math.abs(player.posY - pos.getY()) <= 2.0D && Math.abs(player.posZ - pos.getZ()) <= 3.0D)
+		if(Math.abs(player.func_226277_ct_() - pos.getX()) <= 3.0D && Math.abs(player.func_226278_cu_() - pos.getY()) <= 2.0D && Math.abs(player.func_226281_cx_() - pos.getZ()) <= 3.0D)
 			return true;
 		else if(dir == null)
 			return false;
 		else
 		{
 			BlockPos oppositePos = pos.offset(dir.getOpposite());
-			return Math.abs(player.posX - oppositePos.getX()) <= 3.0D && Math.abs(player.posY - oppositePos.getY()) <= 2.0D && Math.abs(player.posZ - oppositePos.getZ()) <= 3.0D;
+			return Math.abs(player.func_226277_ct_() - oppositePos.getX()) <= 3.0D && Math.abs(player.func_226278_cu_() - oppositePos.getY()) <= 2.0D && Math.abs(player.func_226281_cx_() - oppositePos.getZ()) <= 3.0D;
 		}
 	}
 
@@ -112,6 +116,6 @@ public class NoMoreSleeping
 
 	private static boolean isNormalCube(World world, BlockPos pos)
 	{
-		return !world.getBlockState(pos).causesSuffocation(world, pos);
+		return !world.getBlockState(pos).func_229980_m_(world, pos);
 	}
 }

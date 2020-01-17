@@ -12,7 +12,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = '1.14.4-v1.0'
+version = '1.15.1-v1.0'
 group = 'bl4ckscor3.mod.nomoresleeping'
 archivesBaseName = 'nomoresleeping'
 
@@ -48,7 +48,7 @@ minecraft {
 
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.115'
+    minecraft 'net.minecraftforge:forge:1.15.1-30.0.35'
 }
 
 jar {
